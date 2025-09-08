@@ -13,6 +13,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 // Define plugin constants
 define( 'DDE_PATH', plugin_dir_path( __FILE__ ) );
+define( 'DDE_URL', plugin_dir_url( __FILE__ ) );
 
 // Register the module when Divi is ready
 add_action( 'et_builder_ready', 'dde_register_modules' );

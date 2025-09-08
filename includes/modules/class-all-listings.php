@@ -18,10 +18,28 @@ class DirectoristDiviAllListings extends ET_Builder_Module {
 
     public function init() {
         $this->name = esc_html__( 'Directorist All Listing', 'directorist-divi-extension' );
+        $this->settings_modal_toggles = $this->get_settings_modal_toggles();
+    }
+
+    /**
+     * Get settings modal toggles for grouped settings
+     */
+    public function get_settings_modal_toggles() {
+        $general = [
+            'directory_type'     => esc_html__( 'Directory Type Settings', 'directorist-divi-extension' ),
+            'listing_config'     => esc_html__( 'Listing Configuration', 'directorist-divi-extension' ),
+            'filter_display'     => esc_html__( 'Filter & Display Controls', 'directorist-divi-extension' ),
+            'pagination'         => esc_html__( 'Pagination Area', 'directorist-divi-extension' ),
+        ];
+
+        return [
+            'general' => [ 'toggles' => $general ],
+        ];
     }
 
     public function get_fields() {
         return [
+            // Directory Type Settings Group
             'type' => [
                 'label'           => esc_html__( 'Select Types', 'directorist-divi-extension' ),
                 'type'            => 'text',
@@ -29,7 +47,7 @@ class DirectoristDiviAllListings extends ET_Builder_Module {
                 'default'         => '',
                 'description'     => $this->get_directory_types_description(),
                 'tab_slug'        => 'general',
-                'toggle_slug'     => 'main_content',
+                'toggle_slug'     => 'directory_type',
             ],
             'default_type' => [
                 'label'           => esc_html__( 'Active Type', 'directorist-divi-extension' ),
@@ -38,8 +56,10 @@ class DirectoristDiviAllListings extends ET_Builder_Module {
                 'options'         => $this->get_directory_types_options_with_empty(),
                 'description'     => esc_html__( 'Select the default active directory type.', 'directorist-divi-extension' ),
                 'tab_slug'        => 'general',
-                'toggle_slug'     => 'main_content',
+                'toggle_slug'     => 'directory_type',
             ],
+
+            // Listing Configuration Group
             'header' => [
                 'label'           => esc_html__( 'Display Header Section', 'directorist-divi-extension' ),
                 'type'            => 'yes_no_button',
@@ -51,7 +71,7 @@ class DirectoristDiviAllListings extends ET_Builder_Module {
                 'default'         => 'on',
                 'description'     => esc_html__( 'Show the listings header section.', 'directorist-divi-extension' ),
                 'tab_slug'        => 'general',
-                'toggle_slug'     => 'main_content',
+                'toggle_slug'     => 'listing_config',
             ],
             'header_title' => [
                 'label'           => esc_html__( 'Listings Found Text', 'directorist-divi-extension' ),
@@ -60,7 +80,7 @@ class DirectoristDiviAllListings extends ET_Builder_Module {
                 'default'         => esc_html__( 'Listings Found', 'directorist-divi-extension' ),
                 'description'     => esc_html__( 'Text to display in the header section.', 'directorist-divi-extension' ),
                 'tab_slug'        => 'general',
-                'toggle_slug'     => 'main_content',
+                'toggle_slug'     => 'listing_config',
             ],
             'sidebar' => [
                 'label'           => esc_html__( 'Sidebar Options', 'directorist-divi-extension' ),
@@ -75,7 +95,7 @@ class DirectoristDiviAllListings extends ET_Builder_Module {
                 'default'         => '',
                 'description'     => esc_html__( 'Select sidebar position.', 'directorist-divi-extension' ),
                 'tab_slug'        => 'general',
-                'toggle_slug'     => 'main_content',
+                'toggle_slug'     => 'listing_config',
             ],
             'filter' => [
                 'label'           => esc_html__( 'Enable Filter Button', 'directorist-divi-extension' ),
@@ -88,7 +108,7 @@ class DirectoristDiviAllListings extends ET_Builder_Module {
                 'default'         => 'off',
                 'description'     => esc_html__( 'Show filter button in header.', 'directorist-divi-extension' ),
                 'tab_slug'        => 'general',
-                'toggle_slug'     => 'main_content',
+                'toggle_slug'     => 'listing_config',
             ],
             'preview' => [
                 'label'           => esc_html__( 'Display Preview Image', 'directorist-divi-extension' ),
@@ -101,7 +121,7 @@ class DirectoristDiviAllListings extends ET_Builder_Module {
                 'default'         => 'on',
                 'description'     => esc_html__( 'Show preview images for listings.', 'directorist-divi-extension' ),
                 'tab_slug'        => 'general',
-                'toggle_slug'     => 'main_content',
+                'toggle_slug'     => 'listing_config',
             ],
             'view' => [
                 'label'           => esc_html__( 'View As', 'directorist-divi-extension' ),
@@ -115,7 +135,7 @@ class DirectoristDiviAllListings extends ET_Builder_Module {
                 'default'         => 'grid',
                 'description'     => esc_html__( 'Select the view type for listings.', 'directorist-divi-extension' ),
                 'tab_slug'        => 'general',
-                'toggle_slug'     => 'main_content',
+                'toggle_slug'     => 'listing_config',
             ],
             'map_height' => [
                 'label'           => esc_html__( 'Map Height', 'directorist-divi-extension' ),
@@ -129,7 +149,7 @@ class DirectoristDiviAllListings extends ET_Builder_Module {
                 'default'         => 500,
                 'description'     => esc_html__( 'Set map height in pixels.', 'directorist-divi-extension' ),
                 'tab_slug'        => 'general',
-                'toggle_slug'     => 'main_content',
+                'toggle_slug'     => 'listing_config',
             ],
             'columns' => [
                 'label'           => esc_html__( 'Grid Columns', 'directorist-divi-extension' ),
@@ -144,7 +164,7 @@ class DirectoristDiviAllListings extends ET_Builder_Module {
                 'default'         => '3',
                 'description'     => esc_html__( 'Select number of columns for grid view.', 'directorist-divi-extension' ),
                 'tab_slug'        => 'general',
-                'toggle_slug'     => 'main_content',
+                'toggle_slug'     => 'listing_config',
             ],
             'featured' => [
                 'label'           => esc_html__( 'Show Featured Listings Only', 'directorist-divi-extension' ),
@@ -157,7 +177,7 @@ class DirectoristDiviAllListings extends ET_Builder_Module {
                 'default'         => 'off',
                 'description'     => esc_html__( 'Display only featured listings.', 'directorist-divi-extension' ),
                 'tab_slug'        => 'general',
-                'toggle_slug'     => 'main_content',
+                'toggle_slug'     => 'listing_config',
             ],
             'popular' => [
                 'label'           => esc_html__( 'Show Popular Listings Only', 'directorist-divi-extension' ),
@@ -170,7 +190,7 @@ class DirectoristDiviAllListings extends ET_Builder_Module {
                 'default'         => 'off',
                 'description'     => esc_html__( 'Display only popular listings.', 'directorist-divi-extension' ),
                 'tab_slug'        => 'general',
-                'toggle_slug'     => 'main_content',
+                'toggle_slug'     => 'listing_config',
             ],
             'user' => [
                 'label'           => esc_html__( 'Only For Logged In User?', 'directorist-divi-extension' ),
@@ -183,8 +203,10 @@ class DirectoristDiviAllListings extends ET_Builder_Module {
                 'default'         => 'off',
                 'description'     => esc_html__( 'Show listings only to logged in users.', 'directorist-divi-extension' ),
                 'tab_slug'        => 'general',
-                'toggle_slug'     => 'main_content',
+                'toggle_slug'     => 'listing_config',
             ],
+
+            // Filter & Display Controls Group
             'cat' => [
                 'label'           => esc_html__( 'Specify Categories', 'directorist-divi-extension' ),
                 'type'            => 'text',
@@ -192,7 +214,7 @@ class DirectoristDiviAllListings extends ET_Builder_Module {
                 'default'         => '',
                 'description'     => $this->get_categories_description(),
                 'tab_slug'        => 'general',
-                'toggle_slug'     => 'main_content',
+                'toggle_slug'     => 'filter_display',
             ],
             'tag' => [
                 'label'           => esc_html__( 'Specify Tags', 'directorist-divi-extension' ),
@@ -201,7 +223,7 @@ class DirectoristDiviAllListings extends ET_Builder_Module {
                 'default'         => '',
                 'description'     => $this->get_tags_description(),
                 'tab_slug'        => 'general',
-                'toggle_slug'     => 'main_content',
+                'toggle_slug'     => 'filter_display',
             ],
             'location' => [
                 'label'           => esc_html__( 'Specify Locations', 'directorist-divi-extension' ),
@@ -210,8 +232,10 @@ class DirectoristDiviAllListings extends ET_Builder_Module {
                 'default'         => '',
                 'description'     => $this->get_locations_description(),
                 'tab_slug'        => 'general',
-                'toggle_slug'     => 'main_content',
+                'toggle_slug'     => 'filter_display',
             ],
+
+            // Pagination Area Group
             'listing_number' => [
                 'label'           => esc_html__( 'Listings Per Page', 'directorist-divi-extension' ),
                 'type'            => 'range',
@@ -224,7 +248,7 @@ class DirectoristDiviAllListings extends ET_Builder_Module {
                 'default'         => 6,
                 'description'     => esc_html__( 'Number of listings to display per page. Set -1 to display all listings.', 'directorist-divi-extension' ),
                 'tab_slug'        => 'general',
-                'toggle_slug'     => 'main_content',
+                'toggle_slug'     => 'pagination',
             ],
             'show_pagination' => [
                 'label'           => esc_html__( 'Enable Pagination', 'directorist-divi-extension' ),
@@ -237,7 +261,7 @@ class DirectoristDiviAllListings extends ET_Builder_Module {
                 'default'         => 'off',
                 'description'     => esc_html__( 'Show pagination for listings.', 'directorist-divi-extension' ),
                 'tab_slug'        => 'general',
-                'toggle_slug'     => 'main_content',
+                'toggle_slug'     => 'pagination',
             ],
             'order_by' => [
                 'label'           => esc_html__( 'Order By', 'directorist-divi-extension' ),
@@ -255,7 +279,7 @@ class DirectoristDiviAllListings extends ET_Builder_Module {
                 'default'         => 'date',
                 'description'     => esc_html__( 'Select how to order the listings.', 'directorist-divi-extension' ),
                 'tab_slug'        => 'general',
-                'toggle_slug'     => 'main_content',
+                'toggle_slug'     => 'pagination',
             ],
             'order_list' => [
                 'label'           => esc_html__( 'Order', 'directorist-divi-extension' ),
@@ -268,7 +292,7 @@ class DirectoristDiviAllListings extends ET_Builder_Module {
                 'default'         => 'desc',
                 'description'     => esc_html__( 'Select the order direction.', 'directorist-divi-extension' ),
                 'tab_slug'        => 'general',
-                'toggle_slug'     => 'main_content',
+                'toggle_slug'     => 'pagination',
             ],
         ];
     }
