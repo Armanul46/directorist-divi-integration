@@ -70,23 +70,7 @@ class DirectoristDiviAllListings extends ET_Builder_Module {
                 'tab_slug'        => 'general',
                 'toggle_slug'     => 'directory_type',
             ],
-            'type_display' => [
-                'label'           => esc_html__( 'Icon Position', 'directorist-divi-extension' ),
-                'type'            => 'select',
-                'option_category' => 'layout',
-                'options'         => [
-                    'top'            => esc_html__( 'Default', 'directorist-divi-extension' ),
-                    'column-reverse' => esc_html__( 'Column Reverse', 'directorist-divi-extension' ),
-                    'row'            => esc_html__( 'Row', 'directorist-divi-extension' ),
-                    'row-reverse'    => esc_html__( 'Row Reverse', 'directorist-divi-extension' ),
-                ],
-                'default'         => 'top',
-                'mobile_options'  => true,
-                'responsive'      => true,
-                'description'     => esc_html__( 'Choose the position of icons in directory type navigation.', 'directorist-divi-extension' ),
-                'tab_slug'        => 'general',
-                'toggle_slug'     => 'directory_type',
-            ],
+
             // Listing Configuration Group
             'header' => [
                 'label'           => esc_html__( 'Display Header Section', 'directorist-divi-extension' ),
@@ -482,8 +466,6 @@ class DirectoristDiviAllListings extends ET_Builder_Module {
 
     public function render( $attrs, $content = null, $render_slug ) {
         // Add Type Alignment CSS
-        // Add Icon Position CSS
-        $this->add_icon_position_css( $render_slug );
         $this->add_type_alignment_css( $render_slug );
         
         // Get all props
@@ -572,60 +554,4 @@ class DirectoristDiviAllListings extends ET_Builder_Module {
 
         return do_shortcode( $shortcode );
     }
-    /**
-     * Generate Icon Position CSS
-     */
-    private function add_icon_position_css( $render_slug ) {
-        $type_display = $this->props['type_display'] ?? '';
-        $type_display_tablet = $this->props['type_display_tablet'] ?? '';
-        $type_display_phone = $this->props['type_display_phone'] ?? '';
-        
-        // Desktop
-        if ( ! empty( $type_display ) ) {
-            ET_Builder_Element::set_style( $render_slug, [
-                'selector'    => '.directorist-type-nav .directorist-type-nav__link',
-                'declaration' => sprintf( 'flex-direction: %s !important;', $type_display ),
-            ] );
-            
-            if ( $type_display !== 'top' ) {
-                ET_Builder_Element::set_style( $render_slug, [
-                    'selector'    => '.directorist-type-nav .directorist-type-nav__list .directorist-icon-mask',
-                    'declaration' => 'margin-bottom: 0px !important;',
-                ] );
-            }
-        }
-        
-        // Tablet
-        if ( ! empty( $type_display_tablet ) ) {
-            ET_Builder_Element::set_style( $render_slug, [
-                'selector'    => '.directorist-type-nav .directorist-type-nav__link',
-                'declaration' => sprintf( 'flex-direction: %s !important;', $type_display_tablet ),
-                'media_query' => ET_Builder_Element::get_media_query( 'max_width_980' ),
-            ] );
-            
-            if ( $type_display_tablet !== 'top' ) {
-                ET_Builder_Element::set_style( $render_slug, [
-                    'selector'    => '.directorist-type-nav .directorist-type-nav__list .directorist-icon-mask',
-                    'declaration' => 'margin-bottom: 0px !important;',
-                    'media_query' => ET_Builder_Element::get_media_query( 'max_width_980' ),
-                ] );
-            }
-        }
-        
-        // Phone
-        if ( ! empty( $type_display_phone ) ) {
-            ET_Builder_Element::set_style( $render_slug, [
-                'selector'    => '.directorist-type-nav .directorist-type-nav__link',
-                'declaration' => sprintf( 'flex-direction: %s !important;', $type_display_phone ),
-                'media_query' => ET_Builder_Element::get_media_query( 'max_width_767' ),
-            ] );
-            
-            if ( $type_display_phone !== 'top' ) {
-                ET_Builder_Element::set_style( $render_slug, [
-                    'selector'    => '.directorist-type-nav .directorist-type-nav__list .directorist-icon-mask',
-                    'declaration' => 'margin-bottom: 0px !important;',
-                    'media_query' => ET_Builder_Element::get_media_query( 'max_width_767' ),
-                ] );
-            }
-        }
-    }}
+}
