@@ -58,6 +58,18 @@ class DirectoristDiviAllListings extends ET_Builder_Module {
                 'tab_slug'        => 'general',
                 'toggle_slug'     => 'directory_type',
             ],
+            'type_align' => [
+                'label'           => esc_html__( 'Type Alignment', 'directorist-divi-extension' ),
+                'type'            => 'text_align',
+                'option_category' => 'layout',
+                'options'         => et_builder_get_text_orientation_options( [ 'justified' ] ),
+                'default'         => 'left',
+                'mobile_options'  => true,
+                'responsive'      => true,
+                'description'     => esc_html__( 'Choose how to align the directory type navigation.', 'directorist-divi-extension' ),
+                'tab_slug'        => 'general',
+                'toggle_slug'     => 'directory_type',
+            ],
 
             // Listing Configuration Group
             'header' => [
@@ -411,7 +423,51 @@ class DirectoristDiviAllListings extends ET_Builder_Module {
         ];
     }
 
+    /**
+     * Generate Type Alignment CSS
+     */
+    private function add_type_alignment_css( $render_slug ) {
+        $alignment_map = [
+            'left'   => 'flex-start',
+            'center' => 'center', 
+            'right'  => 'flex-end',
+        ];
+        
+        $type_align = $this->props['type_align'] ?? '';
+        $type_align_tablet = $this->props['type_align_tablet'] ?? '';
+        $type_align_phone = $this->props['type_align_phone'] ?? '';
+        
+        // Desktop
+        if ( ! empty( $type_align ) && isset( $alignment_map[$type_align] ) ) {
+            ET_Builder_Element::set_style( $render_slug, [
+                'selector'    => '.directorist-type-nav .directorist-type-nav__list',
+                'declaration' => sprintf( 'justify-content: %s !important;', $alignment_map[$type_align] ),
+            ] );
+        }
+        
+        // Tablet
+        if ( ! empty( $type_align_tablet ) && isset( $alignment_map[$type_align_tablet] ) ) {
+            ET_Builder_Element::set_style( $render_slug, [
+                'selector'    => '.directorist-type-nav .directorist-type-nav__list',
+                'declaration' => sprintf( 'justify-content: %s !important;', $alignment_map[$type_align_tablet] ),
+                'media_query' => ET_Builder_Element::get_media_query( 'max_width_980' ),
+            ] );
+        }
+        
+        // Phone
+        if ( ! empty( $type_align_phone ) && isset( $alignment_map[$type_align_phone] ) ) {
+            ET_Builder_Element::set_style( $render_slug, [
+                'selector'    => '.directorist-type-nav .directorist-type-nav__list',
+                'declaration' => sprintf( 'justify-content: %s !important;', $alignment_map[$type_align_phone] ),
+                'media_query' => ET_Builder_Element::get_media_query( 'max_width_767' ),
+            ] );
+        }
+    }
+
     public function render( $attrs, $content = null, $render_slug ) {
+        // Add Type Alignment CSS
+        $this->add_type_alignment_css( $render_slug );
+        
         // Get all props
         $header         = $this->props['header'] ?? 'on';
         $header_title   = $this->props['header_title'] ?? 'Listings Found';
@@ -484,6 +540,9 @@ class DirectoristDiviAllListings extends ET_Builder_Module {
             $shortcode_atts['location'] = $location;
         }
 
+        // Generate Type Alignment CSS using Divi's standard method
+        $this->generate_type_alignment_styles( $render_slug );
+        
         // Build shortcode
         $shortcode = '[directorist_all_listing';
         foreach ( $shortcode_atts as $key => $value ) {
